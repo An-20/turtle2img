@@ -15,7 +15,7 @@ Supported items:
 * ovals (i.e. circle & ellipse)
 * arcs (all kind, i.e. ARC, CHORD, PIESLICE)
 * rectangles
-* text (**unwrapped** only i.e. attribute ``width = 0``)
+* text (**unwrapped** only i.e. attribute `width = 0`)
 
 Unsupported items:
 
@@ -33,12 +33,12 @@ Public functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * `filepath`: The filepath to save the output image to
-* `margin`: The number of pixels around the bouding box of image elements to include
+* `margin`: The number of pixels around the bounding box of image elements to include
 
 `def save_jpg(filepath: str, margin=10) -> None:`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * `filepath`: The filepath to save the output image to
-* `margin`: The number of pixels around the bouding box of image elements to include
+* `margin`: The number of pixels around the bounding box of image elements to include
 
 Original repository: https://github.com/WojciechMula/canvas2svg
