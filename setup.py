@@ -12,16 +12,20 @@ setup(
     version="1.0.6",
     description="Save Tkinter Canvas in SVG file",
     author="An-20",
-    url="http://github.com/WojciechMula/canvas2svg",
+    url="https://github.com/An-20/turtle2img",
     license="BSD (3 clauses)",
     long_description=get_readme(),
     packages=["canvasvg"],
-    package_dir={"src": ""},
+    package_dir={"canvasvg": "src"},
     keywords=[
         "turtle",
         "image",
         "png",
         "jpg"
+    ],
+    install_requires=[
+        "CairoSVG",
+        "Pillow"
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
