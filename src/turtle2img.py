@@ -2,14 +2,15 @@
 turtle2img
 """
 
-import io
 import math
 import turtle
 import typing
 import tkinter
-import cairosvg
+import tempfile
 
 from PIL import Image
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPM
 
 
 # ========================================================================
@@ -495,12 +496,11 @@ def save_png(
     doc.documentElement.setAttribute(
         "viewBox", "%0.3f %0.3f %0.3f %0.3f" % (x1, y1, dx, dy))
 
-    output = cairosvg.svg2png(bytestring=doc.toxml().encode("UTF-8"))
-    img = Image.open(io.BytesIO(output))  # use PIL to load and save to png
-    img.save(
-        filepath,
-        format="png"
-    )
+    temp_file_1 = tempfile.NamedTemporaryFile()
+    temp_file_1.write(doc.toxml().encode("UTF-8"))
+    drawing = svg2rlg(temp_file_1.name)
+
+    renderPM.drawToFile(drawing, filepath, fmt="PNG")
 
 
 def save_jpg(
@@ -530,15 +530,26 @@ def save_jpg(
     doc.documentElement.setAttribute(
         "viewBox", "%0.3f %0.3f %0.3f %0.3f" % (x1, y1, dx, dy))
 
-    output = cairosvg.svg2png(bytestring=doc.toxml().encode("UTF-8"))
-    img = Image.open(io.BytesIO(output))  # use PIL to load and save to png
+    temp_file_1 = tempfile.NamedTemporaryFile()
+    temp_file_1.write(doc.toxml().encode("UTF-8"))
+    drawing = svg2rlg(temp_file_1.name)
+
+    temp_file_2 = tempfile.NamedTemporaryFile()
+    renderPM.drawToFile(drawing, temp_file_2.name, fmt="PNG")
+    img = Image.open(temp_file_2.name)  # use PIL to load and save to jpg
     img.load()  # required for png.split()
     background = Image.new("RGB", img.size, (255, 255, 255))
-    background.paste(img, mask=img.split()[3])  # 3 is the alpha channel
-    background.save(
-        filepath,
-        format="jpeg"
-    )
+    if len(img.split()) == 4:
+        background.paste(img, mask=img.split()[3])  # 3 is the alpha channel
+        background.save(
+            filepath,
+            format="jpeg"
+        )
+    else:
+        img.save(
+            filepath,
+            format="jpeg"
+        )
 
 
 # make stuff
@@ -753,23 +764,3 @@ def make_arc(
         path.append('z')
 
     return set_attributes(document.createElement('path'), d=''.join(path))
-
-
-set_canvas_size(6000, 6000)
-turtle.speed(-1)
-turtle.fillcolor("grey")
-turtle.begin_fill()
-for _ in range(360):
-    turtle.pendown()
-    turtle.forward(25)
-    turtle.right(1)
-turtle.forward(1500)
-for _ in range(360):
-    turtle.pendown()
-    turtle.forward(25)
-    turtle.right(1)
-turtle.end_fill()
-save_jpg(
-    "x.jpg",
-    canvas=turtle.getcanvas()
-)

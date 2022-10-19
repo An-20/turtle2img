@@ -8,7 +8,7 @@ def get_readme():
 
 setup(
     name="turtle2img",
-    version="1.0.0",
+    version="1.1.0",
     description="Save turtle images as jpg or png",
     author="An-20",
     url="https://github.com/An-20/turtle2img",
@@ -23,8 +23,9 @@ setup(
         "jpg"
     ],
     install_requires=[
-        "CairoSVG",
-        "Pillow"
+        "svglib",
+        "reportlab",
+        "Pillow",
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
