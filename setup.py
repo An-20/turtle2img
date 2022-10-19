@@ -8,7 +8,7 @@ def get_readme():
 
 setup(
     name="turtle2img",
-    version="1.1.2",
+    version="1.1.3",
     description="Save turtle images as jpg or png",
     author="An-20",
     url="https://github.com/An-20/turtle2img",

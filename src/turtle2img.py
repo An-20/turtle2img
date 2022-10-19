@@ -2,6 +2,7 @@
 turtle2img
 """
 
+import os
 import math
 import turtle
 import typing
@@ -498,12 +499,18 @@ def save_png(
     doc.documentElement.setAttribute(
         "viewBox", "%0.3f %0.3f %0.3f %0.3f" % (x1, y1, dx, dy))
 
-    temp_file_1 = tempfile.NamedTemporaryFile()
-    temp_file_1.write(doc.toxml().encode("UTF-8"))
-    temp_file_1.seek(0)
-    drawing = svg2rlg(temp_file_1.name)
+    fd, path = tempfile.mkstemp()
+    try:
+        with os.fdopen(fd, "w") as tmp:
+            tmp.write(doc.toxml())
+        drawing = svg2rlg(path)
+        renderPM.drawToFile(drawing, filepath, fmt="PNG")
 
-    renderPM.drawToFile(drawing, filepath, fmt="PNG")
+    except Exception as e:
+        raise e
+
+    finally:
+        os.remove(path)
 
 
 def save_jpg(
@@ -535,27 +542,35 @@ def save_jpg(
     doc.documentElement.setAttribute(
         "viewBox", "%0.3f %0.3f %0.3f %0.3f" % (x1, y1, dx, dy))
 
-    temp_file_1 = tempfile.NamedTemporaryFile()
-    temp_file_1.write(doc.toxml().encode("UTF-8"))
-    temp_file_1.seek(0)
-    drawing = svg2rlg(temp_file_1.name)
+    fd_1, path_1 = tempfile.mkstemp()
+    fd_2, path_2 = tempfile.mkstemp()
+    try:
+        with os.fdopen(fd_1, "w") as tmp:
+            tmp.write(doc.toxml())
+        drawing = svg2rlg(path_1)
+        renderPM.drawToFile(drawing, path_2, fmt="PNG")
 
-    temp_file_2 = tempfile.NamedTemporaryFile()
-    renderPM.drawToFile(drawing, temp_file_2.name, fmt="PNG")
-    img = Image.open(temp_file_2.name)  # use PIL to load and save to jpg
-    img.load()  # required for png.split()
-    background = Image.new("RGB", img.size, (255, 255, 255))
-    if len(img.split()) == 4:
-        background.paste(img, mask=img.split()[3])  # 3 is the alpha channel
-        background.save(
-            filepath,
-            format="jpeg"
-        )
-    else:
-        img.save(
-            filepath,
-            format="jpeg"
-        )
+        img = Image.open(path_2)  # use PIL to load and save to jpg
+        img.load()  # required for png.split()
+        background = Image.new("RGB", img.size, (255, 255, 255))
+        if len(img.split()) == 4:
+            background.paste(img, mask=img.split()[3])  # 3 is the alpha channel
+            background.save(
+                filepath,
+                format="jpeg"
+            )
+        else:
+            img.save(
+                filepath,
+                format="jpeg"
+            )
+
+    except Exception as e:
+        raise e
+
+    finally:
+        os.remove(path_1)
+        os.remove(path_2)
 
 
 # make stuff
@@ -770,3 +785,9 @@ def make_arc(
         path.append('z')
 
     return set_attributes(document.createElement('path'), d=''.join(path))
+
+import turtle
+for _ in range(4):
+    turtle.forward(100)
+    turtle.right(90)
+save_jpg("x.jpg")
