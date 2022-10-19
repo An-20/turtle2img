@@ -8,14 +8,14 @@ def get_readme():
 
 setup(
     name="turtle2img",
-    version="1.1.0",
+    version="1.1.2",
     description="Save turtle images as jpg or png",
     author="An-20",
     url="https://github.com/An-20/turtle2img",
     license="BSD (3 clauses)",
     long_description=get_readme(),
-    packages=["canvasvg"],
-    package_dir={"canvasvg": "src"},
+    packages=["turtle2img"],
+    package_dir={"turtle2img": "src"},
     keywords=[
         "turtle",
         "image",

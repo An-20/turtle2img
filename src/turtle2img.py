@@ -473,6 +473,8 @@ def save_png(
         filepath: str,
         margin=10,
 ) -> None:
+    turtle.hideturtle()
+
     doc = make_svg_document()
     canvas = turtle.getcanvas()
 
@@ -498,6 +500,7 @@ def save_png(
 
     temp_file_1 = tempfile.NamedTemporaryFile()
     temp_file_1.write(doc.toxml().encode("UTF-8"))
+    temp_file_1.seek(0)
     drawing = svg2rlg(temp_file_1.name)
 
     renderPM.drawToFile(drawing, filepath, fmt="PNG")
@@ -507,6 +510,8 @@ def save_jpg(
         filepath: str,
         margin=10,
 ) -> None:
+    turtle.hideturtle()
+
     doc = make_svg_document()
     canvas = turtle.getcanvas()
 
@@ -532,6 +537,7 @@ def save_jpg(
 
     temp_file_1 = tempfile.NamedTemporaryFile()
     temp_file_1.write(doc.toxml().encode("UTF-8"))
+    temp_file_1.seek(0)
     drawing = svg2rlg(temp_file_1.name)
 
     temp_file_2 = tempfile.NamedTemporaryFile()
