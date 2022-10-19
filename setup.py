@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from distutils.core import setup
 
 
@@ -8,9 +7,9 @@ def get_readme():
 
 
 setup(
-    name="canvasvg",
-    version="1.0.6",
-    description="Save Tkinter Canvas in SVG file",
+    name="turtle2img",
+    version="1.0.0",
+    description="Save turtle images as jpg or png",
     author="An-20",
     url="https://github.com/An-20/turtle2img",
     license="BSD (3 clauses)",
