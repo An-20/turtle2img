@@ -785,9 +785,3 @@ def make_arc(
         path.append('z')
 
     return set_attributes(document.createElement('path'), d=''.join(path))
-
-import turtle
-for _ in range(4):
-    turtle.forward(100)
-    turtle.right(90)
-save_jpg("x.jpg")
